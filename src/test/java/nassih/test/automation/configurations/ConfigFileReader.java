@@ -33,7 +33,7 @@ public class ConfigFileReader {
             log.atError()
                     .setMessage("Error while Loading Application Properties File.")
                     .log();
-            throw new RuntimeException(e);
+            throw new RuntimeException(e.getMessage());
         }
     }
 
