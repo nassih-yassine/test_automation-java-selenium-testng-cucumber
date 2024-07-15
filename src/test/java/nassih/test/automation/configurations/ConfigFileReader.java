@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
@@ -43,7 +42,10 @@ public class ConfigFileReader {
                 prop,
                 "There is No such Property, " + name + " in Application Properties File"
         );
-        return prop;
+        log.atInfo()
+                .setMessage("Got '" + name + "' from Properties File.")
+                .log();
+    return prop;
     }
 
      private String getPathToResourceDir() {
