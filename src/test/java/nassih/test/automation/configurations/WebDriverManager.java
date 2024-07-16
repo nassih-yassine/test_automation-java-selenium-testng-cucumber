@@ -1,11 +1,9 @@
 package nassih.test.automation.configurations;
 
-import org.apache.commons.lang3.math.NumberUtils;
+import nassih.test.automation.utils.Utils;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.testng.Assert;
-import org.testng.collections.CollectionUtils;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -26,30 +24,28 @@ public class WebDriverManager {
                 .setMessage("Setting Up The Driver.....")
                 .log();
 
+        String driverName = this.getDriverName();
+        int implicitWait = Utils.getWait("IMPLICIT_WAIT");
+        int explicitWait = Utils.getWait("EXPLICIT_WAIT");
+
+        log.atInfo()
+                .setMessage("Loaded Configuration: \n Driver: {},\n Implicit Wait: {},\n Explicit Wait: {}")
+                .addArgument(driverName)
+                .addArgument(implicitWait)
+                .addArgument(explicitWait)
+                .log();
+    }
+
+    private String getDriverName() {
         String driverName = configFileReader.getProperty("DRIVER");
-        if (!SUPPORTED_BROWSERS.contains(driverName)) {
+        if (!SUPPORTED_BROWSERS.contains(driverName) || driverName == null) {
             driverName = "CHROME";
             log.atInfo()
                     .setMessage("The given value of 'DRIVER' is NOT VALID. The Driver is set to default value : 'CHROME'")
                     .log();
         }
-
-        String strImplicitWAit = configFileReader.getProperty("IMPLICIT_WAIT");
-        String strExplicitWait = configFileReader.getProperty("EXPLICIT_WAIT");
-        Assert.assertTrue(
-                NumberUtils.isCreatable(strImplicitWAit),
-                "The given value of 'IMPLICIT_WAIT' should be an INTEGER"
-        );
-        Assert.assertTrue(
-                NumberUtils.isCreatable(strExplicitWait),
-                "The given value of 'EXPLICIT_WAIT' should be an INTEGER"
-        );
-
-        log.atInfo()
-                .setMessage("Loaded Configuration: \n Driver: {},\n Implicit Wait: {},\n Explicit Wait: {}")
-                .addArgument(driverName)
-                .addArgument(strImplicitWAit)
-                .addArgument(strExplicitWait)
-                .log();
+        return driverName;
     }
+
+
 }
